@@ -1,0 +1,39 @@
+# Ablation: same 2.5D FLAIR input, SE blocks removed.
+# Isolates the contribution of the channel-attention mechanism.
+
+name: flair_no_se
+
+data:
+  processed_root: data/processed
+  manifest: data/manifests/splits.csv
+  mode: axial_context
+  num_workers: 4
+
+model:
+  in_channels: 3
+  out_channels: 1
+  base_channels: 32
+  use_se: false
+  se_reduction: 16
+
+train:
+  epochs: 40
+  batch_size: 8
+  learning_rate: 1.0e-3
+  weight_decay: 0.0
+  bce_weight: 0.7
+  pos_weight: 3.0
+  grad_clip_norm: 1.0
+  scheduler_patience: 3
+  scheduler_factor: 0.5
+  early_stopping_patience: 8
+  seed: 42
+  amp: true
+  output_dir: runs/flair_no_se
+  threshold_grid_beta: 1.0
+
+eval:
+  threshold: null
+  min_component_size: 10
+  batch_size: 8
+  output_dir: results/flair_no_se

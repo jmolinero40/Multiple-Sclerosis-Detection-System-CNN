@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: Multiple Sclerosis Lesion Segmentation in Brain MRI with CNNs
+message: If you use this software, please cite it as below.
+type: software
+authors:
+  - family-names: Molinero Araguas
+    given-names: Javier
+    email: jmolinero40@gmail.com
+repository-code: "https://github.com/jmolinero40/Multiple-Sclerosis-Detection-System-CNN"
+license: MIT
+version: 1.0.0
+date-released: "2026-09-29"
+keywords:
+  - medical imaging
+  - image segmentation
+  - multiple sclerosis
+  - magnetic resonance imaging
+  - deep learning
+  - U-Net
