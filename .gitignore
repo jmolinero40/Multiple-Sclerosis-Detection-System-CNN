@@ -1,0 +1,89 @@
+# ---------------------------------------------------------------------------
+# Data. Never commit medical imaging data: it is large, it is redistributed
+# under its own licence, and even de-identified scans are governed by the terms
+# of the original data use agreement. Only the manifests are tracked, because
+# they are small, diffable, and are what makes a split reproducible.
+# ---------------------------------------------------------------------------
+data/*
+!data/manifests/
+!data/README.md
+*.nii
+*.nii.gz
+*.npy
+*.npz
+*.dcm
+
+# ---------------------------------------------------------------------------
+# Model weights and run artefacts. Checkpoints are tens of megabytes and change
+# every run; GitHub is the wrong place for them. Publish the final checkpoint as
+# a release asset or on Zenodo and link it from the README.
+# ---------------------------------------------------------------------------
+runs/
+results/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+wandb/
+lightning_logs/
+mlruns/
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+develop-eggs/
+sdist/
+wheels/
+.installed.cfg
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+.conda/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checkers and linters
+.mypy_cache/
+.dmypy.json
+.ruff_cache/
+.pytype/
+
+# ---------------------------------------------------------------------------
+# Notebooks. Checkpoints are noise; stripped outputs keep diffs readable.
+# ---------------------------------------------------------------------------
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# ---------------------------------------------------------------------------
+# Editors and operating systems
+# ---------------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+.spyproject/
+.spyderproject/
+.DS_Store
+Thumbs.db
+desktop.ini

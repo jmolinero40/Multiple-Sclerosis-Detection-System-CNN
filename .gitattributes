@@ -1,0 +1,18 @@
+# Normalise line endings so Windows and Linux contributors do not produce
+# whole-file diffs for each other.
+* text=auto eol=lf
+
+*.py    text diff=python
+*.md    text
+*.yaml  text
+*.yml   text
+*.csv   text
+
+# Binary: never try to diff or merge these.
+*.png   binary
+*.jpg   binary
+*.pt    binary
+*.pth   binary
+*.npy   binary
+*.nii   binary
+*.gz    binary

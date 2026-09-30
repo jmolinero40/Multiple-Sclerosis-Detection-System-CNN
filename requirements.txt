@@ -1,0 +1,21 @@
+# Runtime dependencies, with lower bounds only.
+# Pinned exact versions live in requirements-lock.txt, generated with:
+#     pip freeze > requirements-lock.txt
+
+# Deep learning
+torch>=2.3,<3.0
+torchvision>=0.15,<1.0
+
+# Medical imaging I/O
+nibabel>=5.0
+
+# Arrays, image ops, scientific computing
+numpy>=1.24,<3.0
+opencv-python-headless>=4.7
+scipy>=1.10
+
+# Configuration
+PyYAML>=6.0
+
+# Figures
+matplotlib>=3.7

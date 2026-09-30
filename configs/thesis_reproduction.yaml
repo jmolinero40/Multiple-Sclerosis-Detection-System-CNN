@@ -1,0 +1,78 @@
+# Faithful reproduction of the original thesis experiment.
+#
+# Every value here matches the scripts the thesis was run with. Use this config
+# when the goal is to reproduce the reported numbers; use configs/multimodal.yaml
+# when the goal is the best model.
+#
+# The data must be preprocessed with the matching normalisation:
+#
+#     python -m msseg.data.preprocess --raw-root data/raw \
+#         --out-root data/processed_legacy \
+#         --geometry pad --height 192 --width 224 \
+#         --normalisation legacy_minmax
+#
+#     python -m msseg.data.splits --processed-root data/processed_legacy \
+#         --out data/manifests/splits_legacy.csv --seed 0
+#
+# Differences from configs/multimodal.yaml, and why each one is a downgrade:
+#
+#   selection_metric: soft_dice
+#       Picks the epoch with the best soft Dice on validation, computed on raw
+#       probabilities. It does not measure the thresholded segmentation that
+#       actually gets reported, so the selected epoch need not be the best one
+#       after thresholding.
+#
+#   fixed_threshold: 0.7
+#       The thesis used 0.7 at test time without sweeping it on validation. The
+#       value is reasonable but was not derived from data.
+#
+#   epochs: 15, early_stopping_patience: 6
+#       Training stopped well before the loss curve flattened.
+#
+#   amp: false
+#       The original ran in full precision. Mixed precision changes results in
+#       the last decimals, which is enough to break an exact reproduction.
+#
+#   legacy_minmax normalisation (set at preprocessing time, above)
+#       Min-max over the whole volume, background included, no outlier clipping.
+#       A single bright voxel near the skull compresses the brain into a narrow
+#       band of the output range.
+
+name: thesis_reproduction
+
+data:
+  processed_root: data/processed_legacy
+  manifest: data/manifests/splits_legacy.csv
+  mode: multimodal
+  num_workers: 0        # the original used 0 (Windows)
+
+model:
+  in_channels: 3
+  out_channels: 1
+  base_channels: 32
+  use_se: true
+  se_reduction: 16
+
+train:
+  epochs: 15
+  batch_size: 8
+  learning_rate: 1.0e-3
+  weight_decay: 0.0
+  bce_weight: 0.7
+  pos_weight: 3.0
+  grad_clip_norm: 1.0
+  scheduler_patience: 2
+  scheduler_factor: 0.5
+  early_stopping_patience: 6
+  seed: 42
+  amp: false
+  output_dir: runs/thesis_reproduction
+  threshold_grid_beta: 1.0
+  selection_metric: soft_dice
+  fixed_threshold: 0.7
+
+eval:
+  threshold: null       # null -> 0.7, carried through from fixed_threshold
+  min_component_size: 10
+  batch_size: 8
+  output_dir: results/thesis_reproduction

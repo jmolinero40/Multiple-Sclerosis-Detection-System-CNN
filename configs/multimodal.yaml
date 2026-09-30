@@ -1,0 +1,39 @@
+# Final system: three co-registered modalities (FLAIR, T1, T2) as input channels.
+# This is the configuration that produced the results reported in the README.
+
+name: multimodal
+
+data:
+  processed_root: data/processed
+  manifest: data/manifests/splits.csv
+  mode: multimodal        # FLAIR / T1 / T2 stacked as channels
+  num_workers: 4          # set to 0 on Windows if DataLoader workers hang
+
+model:
+  in_channels: 3
+  out_channels: 1
+  base_channels: 32       # 32 -> ~7.8M parameters, fits in 6 GB of VRAM at batch 8
+  use_se: true
+  se_reduction: 16
+
+train:
+  epochs: 40
+  batch_size: 8
+  learning_rate: 1.0e-3
+  weight_decay: 0.0
+  bce_weight: 0.7         # loss = 0.7 * BCE + 0.3 * (1 - soft Dice)
+  pos_weight: 3.0         # positive-class weight inside the BCE term
+  grad_clip_norm: 1.0
+  scheduler_patience: 3
+  scheduler_factor: 0.5
+  early_stopping_patience: 8
+  seed: 42
+  amp: true               # mixed precision; ignored on CPU
+  output_dir: runs/multimodal
+  threshold_grid_beta: 1.0   # < 1 favours precision, > 1 favours recall
+
+eval:
+  threshold: null         # null -> use the threshold selected on validation
+  min_component_size: 10  # drop predicted components smaller than this
+  batch_size: 8
+  output_dir: results/multimodal
