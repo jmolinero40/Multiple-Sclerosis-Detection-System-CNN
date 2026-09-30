@@ -38,6 +38,9 @@ and 0.750 mean per-slice Dice on this split, against 0.7185 and 0.7493 here.
 > contain a lesion it is 0.58. The per-patient mean weights each patient
 > equally and is the figure most comparable to the MS lesion segmentation
 > literature. See [`src/msseg/metrics.py`](src/msseg/metrics.py).
+>
+> The checkpoint behind these figures is attached to the
+[v1.0.0 release](../../releases/tag/v1.0.0).
 
 ### Ablation: what the SE blocks buy
 
